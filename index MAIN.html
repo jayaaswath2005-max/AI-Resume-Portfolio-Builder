@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Resume & Portfolio Builder</title>
+  <style>
+    * { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
+      min-height: 100vh;
+      display: flex;
+      color: #333;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 220px;
+      background: #fff;
+      padding: 25px 10px;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+    }
+    .sidebar h2 {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+      color: #007bff;
+    }
+    .sidebar button {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      background: #007bff;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: 0.3s;
+    }
+    .sidebar button:hover, .sidebar button.active {
+      background: #0056b3;
+      transform: scale(1.03);
+    }
+
+    /* Main content */
+    .content {
+      flex: 1;
+      padding: 30px;
+      text-align: center;
+    }
+    h1 {
+      color: #222;
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
+    textarea {
+      width: 80%;
+      height: 120px;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      resize: none;
+      margin-top: 15px;
+      font-size: 15px;
+    }
+    button.generate {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 15px;
+      font-size: 15px;
+      transition: 0.3s;
+    }
+    button.generate:hover { background: #0056b3; }
+    #output {
+      margin-top: 20px;
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      text-align: left;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+      max-width: 80%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #downloadBtn {
+      display: none;
+      margin-top: 10px;
+      background: #28a745;
+      color: #fff;
+      padding: 8px 15px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>AI Builder</h2>
+    <button class="active" onclick="showPage('resume')">Resume</button>
+    <button onclick="showPage('coverletter')">Cover Letter</button>
+    <button onclick="showPage('portfolio')">Portfolio</button>
+  </div>
+
+  <!-- Main Content -->
+  <div class="content">
+    <h1 id="pageTitle">AI Resume Generator</h1>
+    <p id="pageDesc">Generate a professional resume summary in seconds 🚀</p>
+    <textarea id="input" placeholder="Enter your skills, projects, goals..."></textarea><br>
+    <button class="generate" onclick="generateResume()">Generate</button>
+    <div id="output"></div>
+    <button id="downloadBtn" onclick="downloadText()">Download Resume</button>
+  </div>
+
+  <script>
+    let currentType = 'resume';
+
+    function showPage(type) {
+      currentType = type;
+      document.querySelectorAll('.sidebar button').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+
+      const title = document.getElementById('pageTitle');
+      const desc = document.getElementById('pageDesc');
+      const output = document.getElementById('output');
+      const input = document.getElementById('input');
+      const downloadBtn = document.getElementById('downloadBtn');
+
+      input.value = '';
+      output.innerHTML = '';
+      downloadBtn.style.display = 'none';
+
+      if (type === 'resume') {
+        title.innerText = "AI Resume Generator";
+        desc.innerText = "Generate a professional resume summary in seconds 🚀";
+      } else if (type === 'coverletter') {
+        title.innerText = "AI Cover Letter Generator";
+        desc.innerText = "Create a formal cover letter for your job or internship.";
+      } else {
+        title.innerText = "AI Portfolio Generator";
+        desc.innerText = "Showcase your skills and projects with an elegant AI-generated portfolio.";
+      }
+    }
+
+    function generateResume() {
+      const input = document.getElementById('input').value.trim();
+      const outputDiv = document.getElementById('output');
+      const downloadBtn = document.getElementById('downloadBtn');
+
+      if (!input) {
+        outputDiv.innerHTML = "<p style='color:red;'>⚠️ Please enter your details first.</p>";
+        return;
+      }
+
+      outputDiv.innerHTML = "<em>Generating your resume...</em>";
+
+      setTimeout(() => {
+        const resume = `
+          <h3>✅ Resume successfully created!</h3>
+          <h4>Professional Summary</h4>
+          <p>Enthusiastic and detail-oriented individual skilled in ${input}. Passionate about innovation and continuous learning.</p>
+
+          <h4>Key Skills</h4>
+          <ul>
+            <li>AI & Machine Learning</li>
+            <li>Web Development (HTML, CSS, JS)</li>
+            <li>Team Collaboration & Leadership</li>
+          </ul>
+
+          <h4>Projects</h4>
+          <ul>
+            <li>AI Resume & Portfolio Builder – Created an offline resume generator demo.</li>
+          </ul>
+
+          <h4>Contact</h4>
+          <p>Email: example@email.com<br>
+          LinkedIn: linkedin.com/in/example<br>
+          GitHub: github.com/example</p>
+        `;
+
+        outputDiv.innerHTML = resume;
+        downloadBtn.style.display = "inline-block";
+      }, 1000);
+    }
+
+    function downloadText() {
+      const text = document.getElementById('output').innerText;
+      const blob = new Blob([text], { type: "text/plain" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `AI_${currentType}_Resume.txt`;
+      a.click();
+    }
+  </script>
+</body>
+</html>
