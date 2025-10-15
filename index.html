@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Resume & Portfolio Builder</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>AI Builder</h2>
+    <button class="active" onclick="showPage('resume')">Resume</button>
+    <button onclick="showPage('coverletter')">Cover Letter</button>
+    <button onclick="showPage('portfolio')">Portfolio</button>
+  </div>
+
+  <!-- Main Content -->
+  <div class="content">
+    <h1 id="pageTitle">AI Resume Generator</h1>
+    <p id="pageDesc">Generate a professional resume summary in seconds 🚀</p>
+    <textarea id="input" placeholder="Enter your skills, projects, goals..."></textarea><br>
+    <button class="generate" onclick="generateResume()">Generate</button>
+    <div id="output"></div>
+    <button id="downloadBtn" onclick="downloadText()">Download Result</button>
+  </div>
+
+  <script src="generate.js"></script>
+</body>
+</html>
